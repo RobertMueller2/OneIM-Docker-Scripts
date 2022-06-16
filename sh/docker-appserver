@@ -1,0 +1,27 @@
+#!/bin/sh
+
+BASEDIR=$(dirname $(readlink -f $0))
+
+. $BASEDIR/OneIM-Helper.inc.sh || exit 254
+
+CONTAINER=$HOME/Progs/Containers/appserver${ONEIM}
+ 
+for d in secrets search cache ; do
+    if [ ! -d "$CONTAINER"/$d ]; then
+        mkdir -p $CONTAINER/$d
+    fi
+done
+
+sudo docker run --rm \
+    --add-host=OneIMDB-${ONEIM}:${ONEIMADDR} \
+    --name appserver-${ONEIM} \
+    -p 17${ONEIM}:80 \
+    -e "DBSYSTEM=MSSQL" \
+    -e "CONNSTRING=Data Source=OneIMDB-${ONEIM};Initial Catalog=OneIM;User ID=OneIM_Admin;Password=Pass_word1"  \
+    -v ${CONTAINER}/secrets:/run/secrets \
+    -v ${CONTAINER}/search:/var/search \
+    -v ${CONTAINER}/cache:/var/www/App_Data/Cache \
+    -d oneidentity/oneim-appserver:$ONEIMVERSION \
+|| exit 1;
+
+echo "Does not supported logging to files, use docker logs."

@@ -1,0 +1,31 @@
+#!/bin/sh
+
+# The jobservice needs to be able to resolve the hostname from the connectionstring.
+# Since host.docker.internal cannot be aliased at this point, the only
+# option is to add the jobservice to the sql server's network stack.
+
+
+BASEDIR=$(dirname $(readlink -f $0))
+
+. $BASEDIR/OneIM-Helper.inc.sh || exit 254
+
+CONTAINER=$HOME/Progs/Containers/js${ONEIM}
+
+if [ ! -d "$CONTAINER"/logs ]; then 
+    mkdir -p $CONTAINER/logs
+fi
+
+sudo docker run --rm --name js${ONEIM} \
+    --add-host=OneIMDB-${ONEIM}:${ONEIMADDR} \
+    -p 18${ONEIM}:1880 \
+    -e "DBSYSTEM=MSSQL" \
+    -e "CONNSTRING=Data Source=OneIMDB-${ONEIM};Initial Catalog=OneIM;User ID=OneIM_Admin;Password=Pass_word1"  \
+    -e "SERVERNAME=sql2019" \
+    -e "HTTP_USER=admin" \
+    -e "HTTP_PWD=Pass_word1" \
+    -e "REQUESTINTERVAL=30" \
+    -e "QUEUE=\\sql2019" \
+    -e "DEBUGMODE=True" \
+    -v "$HOME/Progs/Containers/js${ONEIM}/logs:/var/log/jobservice" \
+    oneidentity/oneim-job:$ONEIMVERSION
+

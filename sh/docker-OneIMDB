@@ -1,0 +1,25 @@
+#!/bin/sh
+
+# sadly, this requires a world writable directory /home/rdo/Progs/Containers/sqlserver 
+#.. for now anyway
+
+
+BASEDIR=$(dirname $(readlink -f $0))
+
+. $BASEDIR/OneIM-Helper.inc.sh || exit 254
+
+CONTAINER=$HOME/Progs/Containers/db${ONEIM}
+
+if [ ! -d "$CONTAINER" ]; then 
+    mkdir $CONTAINER
+fi
+
+sudo docker run --rm --name OneIMDB-${ONEIM} --hostname OneIMDB-${ONEIM} \
+    --add-host=OneIMDB-${ONEIM}:127.0.0.1 \
+    -e 'ACCEPT_EULA=Y' \
+    -e 'SA_PASSWORD=Pass_word1' \
+    -e 'MSSQL_PID=Developer'  \
+    -e 'MSSQL_AGENT_ENABLED=True' \
+    -v ${CONTAINER}:/var/opt/mssql \
+    -p 14${ONEIM}:1433 \
+    -d mcr.microsoft.com/mssql/server:2019-latest
