@@ -17,5 +17,5 @@ fi
 
 ONEIMVERSION=$(echo $ONEIM | sed \
     -e 's,^81$,8.1.1,g' \
-    -e 's,^82%,8.2,g' \
+    -e 's,^82$,8.2,g' \
 )

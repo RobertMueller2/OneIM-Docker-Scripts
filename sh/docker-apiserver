@@ -1,0 +1,24 @@
+#!/bin/sh
+
+BASEDIR=$(dirname $(readlink -f $0))
+
+. $BASEDIR/OneIM-Helper.inc.sh || exit 254
+
+CONTAINER=$HOME/Progs/Containers/apiserver${ONEIM}
+
+if [ ! -d "$CONTAINER"/secrets ]; then
+    mkdir -p $CONTAINER
+fi
+
+sudo docker run --rm \
+    --add-host=OneIMDB-${ONEIM}:host-gateway \
+    --name apiserver-${ONEIM} \
+    -p 19${ONEIM}:80 \
+    -e "DBSYSTEM=MSSQL" \
+    -e "CONNSTRING=Data Source=OneIMDB-${ONEIM},14${ONEIM};Initial Catalog=OneIM;User ID=OneIM_Admin;Password=Pass_word1" \
+    -e "UPDATEUSER=Module=DialogUser;User=viadmin;password=Pass_word1" \
+    -e "APPSERVERCONNSTRING=URL=http://OneIMDB-${ONEIM}:17${ONEIM}/" \
+    -e "BASEURL=http://OneIMDB-${ONEIM}:19${ONEIM}/" \
+    -v ${CONTAINER}/secrets:/run/secrets \
+    oneidentity/oneim-api:${ONEIMVERSION}
+

@@ -22,3 +22,5 @@ To get the correct ONEIMVERSION docker image, OneIM-Helper.inc.sh does some sed 
 
 Some directories ($HOME/Progs/Containers) have to exist. As far as I remember,  but I have not restested this, sql server data directory needs to be chmod'ed 777. 
 
+When running configwizard, add the target hostname (e.g. OneIMDB-81) as an alias for 127.0.0.1 to /etc/hosts and set the connection as e.g. OneIMDB-81,1481. This should avoid creation of jobs that the jobservice cannot process due to network issues.
+

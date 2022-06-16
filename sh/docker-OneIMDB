@@ -1,8 +1,6 @@
 #!/bin/sh
 
-# sadly, this requires a world writable directory /home/rdo/Progs/Containers/sqlserver 
-#.. for now anyway
-
+# sadly, this requires a world writable directory for the container
 
 BASEDIR=$(dirname $(readlink -f $0))
 
