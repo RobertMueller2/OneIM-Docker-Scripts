@@ -9,9 +9,11 @@ echo $ONEIM | grep -q "[1-9][0-9][0-9]\?" || {
     exit 120
 }
 
-sudo echo "trying to retrieve OneIMDB-${ONEIM} IP Address"
-
-ONEIMADDR=$(sudo docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' OneIMDB-${ONEIM})
+if [ -z $ONEIMADDR ]; then
+    sudo echo "trying to retrieve OneIMDB-${ONEIM} IP Address"
+    
+    ONEIMADDR=$(sudo docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' OneIMDB-${ONEIM})
+fi
 
 ONEIMVERSION=$(echo $ONEIM | sed \
     -e 's,^81$,8.1.1,g' \

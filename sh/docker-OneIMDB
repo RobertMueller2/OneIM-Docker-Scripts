@@ -6,6 +6,9 @@
 
 BASEDIR=$(dirname $(readlink -f $0))
 
+#lame
+ONEIMADDR=xyz
+
 . $BASEDIR/OneIM-Helper.inc.sh || exit 254
 
 CONTAINER=$HOME/Progs/Containers/db${ONEIM}
