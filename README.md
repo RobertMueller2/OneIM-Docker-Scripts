@@ -27,8 +27,27 @@ To get the correct ONEIMVERSION docker image, OneIM-Helper.inc.sh does some sed 
 
 Some directories ($HOME/Progs/Containers) have to exist. As far as I remember,  but I have not restested this, sql server data directory needs to be chmod'ed 777. 
 
-When running configwizard, add the target hostname (e.g. OneIMDB-81) as an alias for 127.0.0.1 to /etc/hosts and set the connection as e.g. OneIMDB-81,1481. This should avoid creation of jobs that the jobservice cannot process due to network issues.
+When running configwizard, add the target hostname (e.g. OneIMDB-81) as an alias for 127.0.0.1 to /etc/hosts and set the connection as e.g. OneIMDB-81,1481. This should avoid creation of jobs that the jobservice cannot process due to network issues. Alternatively, configure jobservice with specific connection info (QBMServer.UID_QBMConnectionInfo) later on.
 
 ## Powershell
 
 TBD
+
+## Notes
+8.2 onwards requires a Trusted Source Key for web portal and API server. There is a default in the shell scripts, and that needs to match what's configured in QBMWebApplication.
+
+### disable custom error messages
+
+When things go wrong in the web applications, the custom error messages make it difficult to investigate. There's no proper editor like vi ;) available in the containers, but you can use sed to replace the pertient config option like below. The application should restart itself due to the file change.
+
+```sh
+$ sudo docker exec -it <container id> /bin/bash
+root@<container id># sed -i -e 's,customErrors mode="On",customErrors mode="Off",g' web.config
+```
+
+## Known issues
+
+- 8.2.1 oneim-web does not respond  
+- 8.2.1 oneim-api throws exception  
+- 9.0 not tested yet  
+

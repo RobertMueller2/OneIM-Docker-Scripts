@@ -14,12 +14,15 @@ sudo docker run --rm  \
     --add-host=OneIMDB-${ONEIM}:host-gateway \
     --name webserver${ONEIM} \
     -p 16${ONEIM}:80 \
-    -p 28${ONEIM}:2880 \
     -e "DBSYSTEM=MSSQL" \
     -e DEBUG=1 \
     -e "CONNSTRING=Data Source=OneIMDB-${ONEIM},14${ONEIM};Initial Catalog=OneIM;User ID=OneIM_Admin;Password=Pass_word1"  \
     -e "UPDATEUSER=Module=DialogUser;User=viadmin;password=Pass_word1" \
+    -e "REGISTRATIONUSER=Module=DialogUser;User=viadmin;password=Pass_word1" \
     -e "APPSERVERCONNSTRING=URL=http://OneIMDB-${ONEIM}:17${ONEIM}/" \
     -e "BASEURL=http://OneIMDB-${ONEIM}:16${ONEIM}/" \
+    -e "TRUSTEDSOURCEKEY=xyz" \
+    -e "APPLICATIONTOKEN=mytoken" \
+    -e "FORCEAPPTOKEN=1" \
     -v ${CONTAINER}/secrets:/run/secrets:ro \
     -d oneidentity/oneim-web:$ONEIMVERSION

@@ -19,6 +19,9 @@ sudo docker run --rm \
     -e "UPDATEUSER=Module=DialogUser;User=viadmin;password=Pass_word1" \
     -e "APPSERVERCONNSTRING=URL=http://OneIMDB-${ONEIM}:17${ONEIM}/" \
     -e "BASEURL=http://OneIMDB-${ONEIM}:19${ONEIM}/" \
+    -e "TRUSTEDSOURCEKEY=xyz" \
+    -e "APPLICATIONTOKEN=mytoken" \
+    -e "FORCEAPPTOKEN=1" \
     -v ${CONTAINER}/secrets:/run/secrets \
     oneidentity/oneim-api:${ONEIMVERSION}
 
