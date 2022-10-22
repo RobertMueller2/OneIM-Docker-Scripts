@@ -10,8 +10,9 @@ if [ ! -d "$CONTAINER"/logs ]; then
     mkdir -p $CONTAINER/logs
 fi
 
-sudo docker run --rm --name js${ONEIM} \
-    --add-host=OneIMDB-${ONEIM}:host-gateway \
+$DRY podman run --rm --name js${ONEIM} \
+    --add-host OneIMDB-${ONEIM}:10.0.2.2 \
+    --network=slirp4netns:allow_host_loopback=true \
     -p 18${ONEIM}:1880 \
     -e "DBSYSTEM=MSSQL" \
     -e "CONNSTRING=Data Source=OneIMDB-${ONEIM},14${ONEIM};Initial Catalog=OneIM;User ID=OneIM_Admin;Password=Pass_word1"  \

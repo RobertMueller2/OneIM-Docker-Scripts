@@ -1,7 +1,5 @@
 #!/bin/sh
 
-# sadly, this requires a world writable directory for the container
-
 BASEDIR=$(dirname $(readlink -f $0))
 
 #lame
@@ -13,14 +11,16 @@ CONTAINER=$HOME/Progs/Containers/db${ONEIM}
 
 if [ ! -d "$CONTAINER" ]; then 
     mkdir $CONTAINER
+    chmod g+ws $CONTAINER
 fi
 
-sudo docker run --rm --name OneIMDB-${ONEIM} --hostname OneIMDB-${ONEIM} \
-    --add-host=OneIMDB-${ONEIM}:127.0.0.1 \
+#UID within the container is 10001
+
+$DRY podman run --rm --name OneIMDB-${ONEIM} --hostname OneIMDB-${ONEIM} \
     -e 'ACCEPT_EULA=Y' \
     -e 'SA_PASSWORD=Pass_word1' \
     -e 'MSSQL_PID=Developer'  \
     -e 'MSSQL_AGENT_ENABLED=True' \
-    -v ${CONTAINER}:/var/opt/mssql \
+    -v ${CONTAINER}:/var/opt/mssql:Z \
     -p 14${ONEIM}:1433 \
     -d mcr.microsoft.com/mssql/server:2019-latest

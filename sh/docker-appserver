@@ -6,14 +6,18 @@ BASEDIR=$(dirname $(readlink -f $0))
 
 CONTAINER=$HOME/Progs/Containers/appserver${ONEIM}
  
+# www-data uid/gid: 33
 for d in secrets search cache ; do
     if [ ! -d "$CONTAINER"/$d ]; then
-        mkdir -p $CONTAINER/$d
+      mkdir -p $CONTAINER/$d
+      podman unshare chown 33 $CONTAINER/$d
     fi
 done
 
-sudo docker run --rm \
-    --add-host=OneIMDB-${ONEIM}:host-gateway \
+
+$DRY podman run --rm \
+    --add-host OneIMDB-${ONEIM}:10.0.2.2 \
+    --network=slirp4netns:allow_host_loopback=true \
     --name appserver-${ONEIM} \
     -p 17${ONEIM}:80 \
     -e "DBSYSTEM=MSSQL" \
