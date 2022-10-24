@@ -25,7 +25,7 @@ ONEIMDEFAULTVERSION=90
 
 The scripts do some replacement to turn versions into image versions, e.g. 81 to 8.1.1, 90 to 9.0, etc. Of course this needs to be maintained down the road. ;)
 
-The ports for the services depend on the version, so theoratically several releases could run at the same time:
+The ports for the services depend on the version, so theoretically several releases could run at the same time:
 
 - DB listens on 14&lt;version&gt;
 - Jobservice listens on 18&lt;version&gt;
@@ -55,7 +55,7 @@ All scripts can take literal "dry" as a parameter before the version (e.g. `podm
 
 ### disable custom error messages
 
-When things go wrong in the web applications, the custom error messages make it difficult to investigate. There's no proper editor like vi ;) available in the containers, but you can use sed to replace the pertient config option like below. The application should restart itself due to the file change.
+When things go wrong in the web applications, the custom error messages make it difficult to investigate. There's no proper editor like vi ;) available in the containers unless you install it, but you can use sed to replace the pertient config option like below. The application should restart itself due to the file change.
 
 ```sh
 $ sudo docker exec -it <container id> /bin/bash
