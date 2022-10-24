@@ -1,0 +1,17 @@
+#!/bin/sh
+
+BASEDIR=$(dirname $(readlink -f $0))
+
+. $BASEDIR/OneIM-Helper.inc.sh || exit 254
+
+if [ $ONEIM -lt 82 ]; then
+    echo "No dbagent available prior to 8.2"
+    ext 127
+fi
+
+$DRY podman run --rm  \
+    --name dbagent${ONEIM} \
+    --add-host OneIMDB-${ONEIM}:10.0.2.2 \
+    --network=slirp4netns:allow_host_loopback=true \
+    -e "CONNSTRING=Data Source=OneIMDB-${ONEIM},14${ONEIM};Initial Catalog=OneIM;User ID=OneIM_Admin;Password=Pass_word1"  \
+    -d oneidentity/oneim-dbagent:$ONEIMVERSION

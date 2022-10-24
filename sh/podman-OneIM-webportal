@@ -3,16 +3,10 @@
 BASEDIR=$(dirname $(readlink -f $0))
 
 . $BASEDIR/OneIM-Helper.inc.sh || exit 254
-
-CONTAINER=$HOME/Progs/Containers/webserver${ONEIM}
+CONTAINER=${CONTAINERDATA}/webportal${ONEIM}
 
 # www-data uid/gid: 33
-for d in secrets cache ; do
-    if [ ! -d "$CONTAINER"/$d ]; then
-      mkdir -p $CONTAINER/$d
-      podman unshare chown 33 $CONTAINER/$d
-    fi
-done
+create_container_subdir_web 33 secrets cache
 
 $DRY podman run --rm  \
     --name web${ONEIM} \

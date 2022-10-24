@@ -4,15 +4,8 @@ BASEDIR=$(dirname $(readlink -f $0))
 
 . $BASEDIR/OneIM-Helper.inc.sh || exit 254
 
-CONTAINER=$HOME/Progs/Containers/apiserver${ONEIM}
-
-# www-data uid/gid: 33
-for d in secrets ; do
-    if [ ! -d "$CONTAINER"/$d ]; then
-      mkdir -p $CONTAINER/$d
-      podman unshare chown 33 $CONTAINER/$d
-    fi
-done
+CONTAINER=${CONTAINERDATA}/api${ONEIM}
+create_container_subdir_web 33 secrets
 
 $DRY podman run --rm \
     --add-host OneIMDB-${ONEIM}:10.0.2.2 \

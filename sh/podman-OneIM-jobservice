@@ -3,8 +3,7 @@
 BASEDIR=$(dirname $(readlink -f $0))
 
 . $BASEDIR/OneIM-Helper.inc.sh || exit 254
-
-CONTAINER=$HOME/Progs/Containers/js${ONEIM}
+CONTAINER=$CONTAINERDATA/js${ONEIM}
 
 if [ ! -d "$CONTAINER"/logs ]; then 
     mkdir -p $CONTAINER/logs
