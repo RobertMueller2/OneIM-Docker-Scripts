@@ -20,7 +20,7 @@ $DRY podman run --rm  \
     -e "REGISTRATIONUSER=Module=DialogUser;User=viadmin;password=Pass_word1" \
     -e "APPSERVERCONNSTRING=URL=http://OneIMDB-${ONEIM}:17${ONEIM}/" \
     -e "BASEURL=http://OneIMDB-${ONEIM}:16${ONEIM}/" \
-    -e "TRUSTEDSOURCEKEY=xyz" \
+    -e "TRUSTEDSOURCEKEY=D34db33F!" \
     -e "APPLICATIONTOKEN=mytoken" \
     -e "FORCEAPPTOKEN=1" \
     -v ${CONTAINER}/secrets:/run/secrets:ro \

@@ -74,7 +74,7 @@ TBD
 - 8.2.1 mono server within oneim-web does not respond, I have not yet found the cause
 
 ## Notes
-8.2 onwards requires a Trusted Source Key for web portal and API server. There is a default in the shell scripts, and that needs to match what's configured in QBMWebApplication.
+8.2 onwards requires a Trusted Source Key for web portal and API server. There is a default in the shell scripts, and that needs to match what's configured in QBMWebApplication.TrustedSourceKey. Unlike the web installer, the docker images (at least 8.2 and 9.0) do not set the TrustedSourceKey in the DB. Moreover, the value in the DB is supposed to be a hash and when entering the value via e.g. objectbrowser, it's stored as plain text, so that way there would be a mismatch. Fortunately, I can provide you with the hash value for the script default `D34db33F!`: `P|E|1v7fMhUANaiTUVSxS8E7+M8m|XFFhOJ02dtLbQfpqP9oqYxfum0Gg3oGaHVexYU0aDHMjTPJCKizV+g3/yozYsi9b/jHU1YrQLqdtYYcl` -- but you still have to add this to both API Server's and Web Portal's QBMWebApplication entries.
 
 8.2 can use the oneim-dbagent (not tested), 9.0 and later needs to.
 
