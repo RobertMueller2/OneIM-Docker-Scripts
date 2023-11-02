@@ -9,18 +9,18 @@ Yes, there's compose files and all that. I'm aware! I'm using these scripts to s
 
 This repository is primarily meant for reference than actual usage ;)
 
-I've successfully tested the Linux scripts with 8.1.1 (8.1.5 DB), 9.0 and 9.1.
+I've successfully tested the Linux scripts with 8.1.1 (8.1.5 DB), 9.0, 9.1. 9.2 works but has issues with the API server that I have not yet investigated. (See below)
 
 ## Linux Host
 ### sh scripts
 
-The scripts take one optional parameter, e.g. 81, 82, 90 referring to a OneIM release (without SP).
+The scripts take one optional parameter, e.g. 81, 82, 90, 91, 92 referring to a OneIM release (without SP).
 
 The parameter is only optional if a default version is specificed. Also, the scripts need to know where to create the persisting container directories. This is configured in `$HOME/.config/podman-OneIM.inc.sh` with the env vars `CONTAINERDATA` and `ONEIMDEFAULTVERSION`, e.g. your file could look like this:
 
 ```sh
 CONTAINERDATA=$HOME/Containers
-ONEIMDEFAULTVERSION=90
+ONEIMDEFAULTVERSION=92
 ```
 
 The scripts do some replacement to turn versions into image versions, e.g. 81 to 8.1.1, 90 to 9.0, etc. Of course this needs to be maintained down the road. ;)
@@ -72,6 +72,7 @@ TBD
 ## Known issues
 
 - 8.2.1 mono server within oneim-web does not respond, I have not yet found the cause. Last observed 2023-07-04.
+- 9.2 API server does not work. At this point I have not narrowed down why.
 
 ## Notes
 
