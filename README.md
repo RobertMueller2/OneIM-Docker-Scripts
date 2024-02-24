@@ -14,9 +14,20 @@ I've successfully tested the Linux scripts with 8.1.1 (8.1.5 DB), 9.0, 9.1. 9.2 
 ## Linux Host
 ### sh scripts
 
-The scripts take one optional parameter, e.g. 81, 82, 90, 91, 92 referring to a OneIM release (without SP).
+The DB script usage is:
+```sh
+podman-OneIM-DB [--dry] [--oneim <version>] [--mssql <version>]
+```
 
-The parameter is only optional if a default version is specificed. Also, the scripts need to know where to create the persisting container directories. This is configured in `$HOME/.config/podman-OneIM.inc.sh` with the env vars `CONTAINERDATA` and `ONEIMDEFAULTVERSION`, e.g. your file could look like this:
+The other scripts can be used as:
+```sh
+<scriptname> [--dry] [--oneim <version>]
+```
+
+- OneIM versions are 81, 82, 90, 91, 92.
+- DB versions are 2019, 2022, ...
+
+Both `--oneim` and `--mssql` can be skipped if a default version is specificed. Also, the scripts need to know where to create the persisting container directories. This is configured in `$HOME/.config/podman-OneIM.inc.sh` with the env vars `CONTAINERDATA` and `ONEIMDEFAULTVERSION`, e.g. your file could look like this:
 
 ```sh
 CONTAINERDATA=$HOME/Containers
@@ -44,8 +55,8 @@ Podman imports the host's /etc/hosts to the container, then applies the host ali
 Workarounds:
 - run the frontends from a VM and place an appropriate host alias for OneIMDB-&lt;version&gt; there
 - edit host's /etc/hosts file temporarily for placing connection string in the database
-- use a docker container to run the frontends with wine. I should imagine it's some hassle to setup, but since OneIM fat clients do work with wine (.NET framework but not mono) and containers are known to support graphical applications, it certainly sounds possible. This container could again have a host alias for OneIMDB-<version> pointing to 10.0.2.2.
-- use podman > 4.1 and check out the base_hosts_file option in containers.conf
+- use a docker container to run the frontends with wine. I should imagine it's some hassle to setup, but since OneIM fat clients do work with wine (.NET framework but not mono) and containers are known to support graphical applications, it certainly sounds possible. This container could again have a host alias for `OneIMDB-<version>` pointing to 10.0.2.2.
+- use podman > 4.1 and check out the `base_hosts_file` option in containers.conf
 
 ### Troubleshooting
 

@@ -1,6 +1,7 @@
 #!/bin/sh
 
 BASEDIR=$(dirname $(readlink -f $0))
+ISDBSCRIPT=1
 
 #lame
 ONEIMADDR=xyz
@@ -13,6 +14,12 @@ if [ ! -d "$CONTAINER" ]; then
     chmod g+ws $CONTAINER
 fi
 
+if [ -z "$MSSQLVERSION" ];then
+    echo "No MSSQLVERSION given as parameter or MSSQLDEFAULTVERSION"
+    usage
+    exit 254
+fi
+
 #UID within the container is 10001
 
 $DRY podman run --rm --name OneIMDB-${ONEIM} --hostname OneIMDB-${ONEIM} \
@@ -22,4 +29,4 @@ $DRY podman run --rm --name OneIMDB-${ONEIM} --hostname OneIMDB-${ONEIM} \
     -e 'MSSQL_AGENT_ENABLED=True' \
     -v ${CONTAINER}:/var/opt/mssql:Z \
     -p 14${ONEIM}:1433 \
-    -d mcr.microsoft.com/mssql/server:2019-latest
+    -d mcr.microsoft.com/mssql/server:${MSSQLVERSION}-latest

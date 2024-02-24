@@ -1,3 +1,4 @@
+ONEIMCONF="$HOME/.config/podman-OneIM.inc.sh"
 
 create_container_subdir_web () {
   uid=$1
@@ -11,14 +12,60 @@ create_container_subdir_web () {
   done
 }
 
-DRY=
-if [ "$1" = "dry" ]; then
-    DRY=echo
-    shift
-fi
+usage() {
+    echo -n "$0 [--dry] [--oneim <version>]"
+    if [ -n "$ISDBSCRIPT" ];then
+       echo -n " [--mssql <version>]"
+    fi
+    echo
+    echo
+    echo "--oneim can be skipped if ONEIMDEFAULTVERSION is defined in ${ONEIMCONF}."
+    if [ -n "$ISDBSCRIPT" ];then
+      echo "--mssql can be skipped if MSSQLDEFAULTVERSION is defined in ${ONEIMCONF}."
+    fi
+}
 
-ONEIM=$1
-ONEIMCONF="$HOME/.config/podman-OneIM.inc.sh"
+TPARAMS=$(mktemp)
+
+while [ $# -ge 1 ]; do
+    case $1 in
+        --dry)
+            echo "DRY=echo" >> $TPARAMS
+            shift
+            ;;
+        --oneim)
+            shift
+            if ! echo $1 | grep -q "^[1-9][0-9][0-9]\?\$"; then
+                echo "--oneim $1 is not a valid OneIM version"
+                echo
+                usage
+                exit 210
+            fi
+            echo "ONEIMVERSION=$1" >> $TPARAMS
+            shift
+            ;;
+        --mssql)
+            shift
+            # this ought to be enough, I suppose
+            if ! echo $1 | grep -q "^20[0-9][0-9]\?\$"; then
+                echo "--mssql $1 is not a valid SQL Server version"
+                echo
+                usage
+                exit 210
+            fi
+            echo "MSSQLVERSION=$1" >> $TPARAMS
+            shift
+            ;;
+        *)
+            echo "unknown parameter $1"
+            usage
+            exit 209
+    esac
+done
+
+eval $(cat ${TPARAMS})
+rm $TPARAMS
+
 
 if [ ! -f "$ONEIMCONF" ];then
     echo "Error: ${ONEIMCONF} does not exist. Consider" >&2
@@ -40,20 +87,18 @@ if [ -z "$ONEIMDEFAULTVERSION" ];then
     echo "echo ONEIMDEFAULTVERSION=90 >> ${ONEIMCONF}" >&2
 fi
 
-if [ -z "$ONEIM" ];then
-    ONEIM=$ONEIMDEFAULTVERSION
+if [ -z "$MSSQLDEFAULTVERSION" ];then
+    echo "Warning: MSSQLDEFAULTVERSION not set, e.g."
+    echo "echo MSSQLDEFAULTVERSION=2022 >> ${ONEIMCONF}" >&2
 fi
 
-echo $ONEIM | grep -q "[1-9][0-9][0-9]\?" || {
-    echo "$ONEIM is an invalid version" >&2
-    exit 120
-}
+ONEIM=${ONEIM:-$ONEIMDEFAULTVERSION}
+MSSQLVERSION=${MSSQLVERSION:-$MSSQLDEFAULTVERSION}
 
-#if [ -z $ONEIMADDR ]; then
-#    echo "trying to retrieve OneIMDB-${ONEIM} IP Address"
-#    
-#    ONEIMADDR=$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' OneIMDB-${ONEIM})
-#fi
+if ! echo $ONEIM | grep -q "[1-9][0-9][0-9]\?"; then
+    echo "$ONEIM is an invalid OneIM version" >&2
+    exit 120
+fi
 
 ONEIMVERSION=$(echo $ONEIM | sed \
     -e 's,^81$,8.1.1,g' \
@@ -61,3 +106,4 @@ ONEIMVERSION=$(echo $ONEIM | sed \
     -e 's,^90,9.0,g' \
     -e 's,^91,9.1,g' \
     -e 's,^92,9.2,g')
+
