@@ -41,7 +41,7 @@ while [ $# -ge 1 ]; do
                 usage
                 exit 210
             fi
-            echo "ONEIMVERSION=$1" >> $TPARAMS
+            echo "ONEIM=$1" >> $TPARAMS
             shift
             ;;
         --mssql)
