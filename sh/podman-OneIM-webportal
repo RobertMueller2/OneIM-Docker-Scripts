@@ -3,6 +3,12 @@
 BASEDIR=$(dirname $(readlink -f $0))
 
 . $BASEDIR/OneIM-Helper.inc.sh || exit 254
+
+if [ "$ONEIM" -gt 92 ];then
+    echo "Webdesigner web portal discontinued"
+    exit 253
+fi
+
 CONTAINER=${CONTAINERDATA}/webportal${ONEIM}
 
 # www-data uid/gid: 33

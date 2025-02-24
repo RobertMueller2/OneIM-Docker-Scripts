@@ -100,10 +100,17 @@ if ! echo $ONEIM | grep -q "[1-9][0-9][0-9]\?"; then
     exit 120
 fi
 
+if [ "$ONEIM" -gt 92 ];then
+    WEBPORT=8080
+else
+    WEBPORT=80
+fi
+
 ONEIMVERSION=$(echo $ONEIM | sed \
     -e 's,^81$,8.1.1,g' \
     -e 's,^82$,8.2,g' \
     -e 's,^90,9.0,g' \
     -e 's,^91,9.1,g' \
-    -e 's,^92,9.2,g')
+    -e 's,^92,9.2,g' \
+    -e 's,^93,9.3,g')
 

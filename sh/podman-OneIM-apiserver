@@ -11,7 +11,7 @@ $DRY podman run --rm \
     --add-host OneIMDB-${ONEIM}:10.0.2.2 \
     --network=slirp4netns:allow_host_loopback=true \
     --name apiserver-${ONEIM} \
-    -p 19${ONEIM}:80 \
+    -p 19${ONEIM}:${WEBPORT} \
     -e "DBSYSTEM=MSSQL" \
     -e "CONNSTRING=Data Source=OneIMDB-${ONEIM},14${ONEIM};Initial Catalog=OneIM;User ID=OneIM_Admin;Password=Pass_word1" \
     -e "UPDATEUSER=Module=DialogUser;User=viadmin;password=Pass_word1" \
