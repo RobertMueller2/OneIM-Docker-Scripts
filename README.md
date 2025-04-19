@@ -78,7 +78,7 @@ Alternatively, you can run `apt update` and install nano, vim, etc...
 ## Windows Host
 ### Powershell
 
-TBD
+Not here, but in my [Dotfile-Snippets repository](https://github.com/RobertMueller2/Dotfile-Snippets/blob/main/powershell/modules/OneIM/OneIM.psm1)
 
 ## Known issues
 
