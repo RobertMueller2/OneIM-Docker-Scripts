@@ -9,7 +9,7 @@ Yes, there's compose files and all that. I'm aware! I'm using these scripts to s
 
 This repository is primarily meant for reference than actual usage ;)
 
-I've successfully tested the Linux scripts with 8.1.1 (8.1.5 DB), 9.0, 9.1. 9.2 works but has issues with the API server that I have not yet investigated. (See below)
+I've successfully tested the Linux scripts with 8.1.1 (8.1.5 DB), 8.2, 9.0, 9.1, 9.2 and 9.3. 8.2.1 and 9.2.0 have isses (see below).
 
 ## Linux Host
 ### sh scripts
@@ -24,7 +24,7 @@ The other scripts can be used as:
 <scriptname> [--dry] [--oneim <version>]
 ```
 
-- OneIM versions are 81, 82, 90, 91, 92.
+- OneIM versions are 81, 82, 90, 91, 92, 93.
 - DB versions are 2019, 2022, ...
 
 Both `--oneim` and `--mssql` can be skipped if a default version is specificed. Also, the scripts need to know where to create the persisting container directories. This is configured in `$HOME/.config/podman-OneIM.inc.sh` with the env vars `CONTAINERDATA` and `ONEIMDEFAULTVERSION`, e.g. your file could look like this:
