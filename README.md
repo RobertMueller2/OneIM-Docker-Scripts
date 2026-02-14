@@ -9,7 +9,7 @@ Yes, there's compose files and all that. I'm aware! I'm using these scripts to s
 
 This repository is primarily meant for reference than actual usage ;)
 
-I've successfully tested the Linux scripts with 8.1.1 (8.1.5 DB), 8.2, 9.0, 9.1, 9.2 and 9.3. 8.2.1 and 9.2.0 have isses (see below).
+I've successfully tested the Linux scripts with 8.1.1 (8.1.5 DB), 8.2, 9.0, 9.1, 9.2, 9.3 and 10.0. 8.2.1 and 9.2.0 have issues (see below).
 
 ## Linux Host
 ### sh scripts
@@ -44,7 +44,7 @@ The ports for the services depend on the version, so theoretically several relea
 - Apiserver listens on 19&lt;version&gt;
 - Webserver listens on 16&lt;version&gt;
 
-The hostname is also formed from the version, e.g. OneIMDB-90, OneIMDB-81 etc. When running configwizard, add the target hostname as an alias for 127.0.0.1 to /etc/hosts and set the connection as e.g. OneIMDB-81,1481. This should avoid creation of jobs that the jobservice cannot process due to network issues (but please see next section, because this is not entirely issue-free). Alternatively, configure jobservice with specific connection info (QBMServer.UID_QBMConnectionInfo) later on.
+The hostname is also formed from the version, e.g. OneIMDB-90, OneIMDB-81 etc. When running configwizard, add the target hostname as an alias for 127.0.0.1 to /etc/hosts and set the connection as e.g. OneIMDB-81,1481. This should avoid creation of jobs that the jobservice cannot process due to network issues (but please see next section, because this is not entirely issue-free). Alternatively, configure jobservice with specific connection info (`QBMServer.UID_QBMConnectionInfo`) later on.
 
 ### Networking
 
@@ -60,9 +60,9 @@ Workarounds:
 
 ### Troubleshooting
 
-mssql container runs with user mssql, but volume ownership of the user running the container is mapped to root inside. As far as I can tell, creating the volume root group writable is sufficient. For troubleshooting, `podman unshare` might be a first step.
+mssql container runs with user mssql, but volume ownership of the user running the container is mapped to root inside. `podman-OneIM-DB` tries to set the container root directoryy gid to mssql (10001 from a container perspective) via `podman unshare`, and afaict this should work. For troubleshooting, `podman unshare` might be a first step.
 
-All scripts can take literal "dry" as a parameter before the version (e.g. `podman-OneIM-apiserver dry 90`). In that case, the script prints the container run command instead of issuing it.
+All scripts can take literal "--dry" as a parameter before the version (e.g. `podman-OneIM-apiserver --dry 90`). In that case, the script prints the container run command instead of issuing it.
 
 ### disable custom error messages
 

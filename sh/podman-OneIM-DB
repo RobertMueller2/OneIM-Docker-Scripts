@@ -9,9 +9,11 @@ ONEIMADDR=xyz
 . $BASEDIR/OneIM-Helper.inc.sh || exit 254
 CONTAINER=${CONTAINERDATA}/db${ONEIM}
 
+#UID/GID from container perspective are 10001
 if [ ! -d "$CONTAINER" ]; then 
     mkdir $CONTAINER
     chmod g+ws $CONTAINER
+    podman unshare chgrp 10001 $CONTAINER
 fi
 
 if [ -z "$MSSQLVERSION" ];then
@@ -19,8 +21,6 @@ if [ -z "$MSSQLVERSION" ];then
     usage
     exit 254
 fi
-
-#UID within the container is 10001
 
 $DRY podman run --rm --name OneIMDB-${ONEIM} --hostname OneIMDB-${ONEIM} \
     -e 'ACCEPT_EULA=Y' \
